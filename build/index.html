@@ -5,9 +5,8 @@
   <title>Duration Input example</title>
 </head>
 <body>
-  <script src='//localhost:9091/livereload.js'></script>
 
-  <input type='text' id='test-input' min="5" step="3" value="126" format="h/m">
+  <input type='text' id='test-input' min="5" step="5" value="12" format="h/m">
 
   <script src='jquery.min.js'></script>
   <script src='jquery.durationInput.js'></script>
@@ -15,7 +14,7 @@
     $(function() {
       $('#test-input').durationInput({
         //step: 5,
-        max: 1680
+        max: 65
       }).change(function () {
         console.log(this.value)
       });

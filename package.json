@@ -7,11 +7,9 @@
     "test": "./node_modules/.bin/karma start",
     "build": "./node_modules/.bin/rollup -c",
     "test:dev": "./node_modules/.bin/karma start",
-    "build:dev": "cp ./node_modules/jquery/dist/jquery.min.js build/ && ./node_modules/.bin/onchange src/**/*.js src/*.js -- ./node_modules/.bin/rollup -c rollup.config.dev.js",
-    "open:dev": "./node_modules/.bin/opener http://localhost:9090",
-    "serve": "./node_modules/.bin/http-server -p 9090 build/",
-    "live-reload": "./node_modules/.bin/live-reload --port 9091 build/",
-    "dev": "concurrently \"npm run live-reload -s\" \"npm run serve -s\" \"npm run test:dev\" \"npm run build:dev\" \"npm run open:dev\""
+    "build:dev": "./node_modules/.bin/onchange src/**/*.js src/*.js -- ./node_modules/.bin/rollup -c rollup.config.dev.js",
+    "browser-sync": "./node_modules/.bin/browser-sync start --server build --files build",
+    "dev": "concurrently \"npm run browser-sync\" \"npm run test:dev\" \"npm run build:dev\""
   },
   "keywords": [
     "jquery-plugin"
@@ -21,9 +19,9 @@
   "devDependencies": {
     "babel-cli": "^6.8.0",
     "babel-preset-es2015-rollup": "^1.1.1",
+    "browser-sync": "^2.12.8",
     "chai": "^3.5.0",
     "concurrently": "^2.1.0",
-    "http-server": "^0.9.0",
     "karma": "^0.13.22",
     "karma-chai-plugins": "^0.7.0",
     "karma-chrome-launcher": "^1.0.1",
@@ -33,10 +31,8 @@
     "karma-mocha-reporter": "^2.0.3",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-rollup-preprocessor": "^2.0.1",
-    "live-reload": "^1.1.0",
     "mocha": "^2.4.5",
     "onchange": "^2.4.0",
-    "opener": "^1.4.1",
     "phantomjs-prebuilt": "^2.1.7",
     "rollup": "^0.26.3",
     "rollup-plugin-babel": "^2.4.0",

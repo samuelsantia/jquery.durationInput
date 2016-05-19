@@ -21,22 +21,3 @@ export function optsFromAttrs($input, extract = ['min', 'max', 'step', 'format']
     return map[attr] = isNumber.test(value) ? parseInt(value) : value;
   };
 };
-
-export function debounce(fn, wait, inmediate) {
-  let tmo;
-
-  return function () {
-    const context = this;
-    const args = arguments;
-    const callNow = inmediate && !tmo;
-
-    clearTimeout(tmo);
-    tmo = setTimeout(_later, wait);
-    if ( callNow ) fn.apply(context, args);
-
-    function _later(){
-      tmo = null;
-      if ( !inmediate ) fn.apply(context, arguments);
-    }
-  }
-};

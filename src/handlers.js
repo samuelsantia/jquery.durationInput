@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import converters from './utils/converters';
-import { inputVal, capitalize, debounce } from './utils/helpers';
+import { inputVal, capitalize } from './utils/helpers';
 
 export default (function () {
 
@@ -29,13 +29,13 @@ export default (function () {
     }
   };
 
+  let timeoutValue;
   function _inputHandle({ target }) {
     const { unit } = this.opts;
     const values   = this.renderer.getValues();
     const value = converters[`to${capitalize(unit)}`](values);
-    const fn = this.val.bind(this, value);
 
-    debounce(fn, 500)();
+    this.val(value);
   };
 
   function _blurHandle({ target }) {
@@ -50,6 +50,8 @@ export default (function () {
       const values   = this.renderer.getValues();
       this.val(converters[`to${capitalize(unit)}`](values));
     }
+
+    this.forceMin();
   };
 
   function _getInputStep($input) {

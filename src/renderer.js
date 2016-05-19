@@ -38,7 +38,11 @@ export default (function (){
     }
 
     updateUnit(unit, value) {
-      if ( this[unit] ) this[unit].val(value);
+      const $input = this[unit];
+      if ( $input ) {
+        value = value === 0 && $input.val() === '' ? '' : value;
+        this[unit].val(value);
+      }
     }
 
     destroy() {

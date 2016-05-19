@@ -63,10 +63,10 @@ class DurationInput {
   }
   val(value) {
     if ( typeof value === 'undefined' || value === null ) return this.el.val();
-    console.log("VALUE")
+
     const { min, max, unit, format } = this.opts;
     if ( value > max ) value = max;
-    if ( value < min ) value = min;
+    if ( value < 0 ) value = 0;
 
     const prevValue = inputVal(this.el);
     const splitted = converters.splitTime(value, unit, format);
@@ -75,6 +75,11 @@ class DurationInput {
     this.el.val(value);
 
     if ( prevValue !== value ) this.el.trigger('change');
+  }
+
+  forceMin() {
+    const { min } = this.opts;
+    if ( this.val() < min) this.val(min);
   }
 }
 
