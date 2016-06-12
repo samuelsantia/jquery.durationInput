@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/karma start",
-    "build": "./node_modules/.bin/rollup -c",
-    "test:dev": "./node_modules/.bin/karma start",
-    "build:dev": "./node_modules/.bin/onchange src/**/*.js src/*.js -- ./node_modules/.bin/rollup -c rollup.config.dev.js",
-    "browser-sync": "./node_modules/.bin/browser-sync start --server build --files build",
+    "test": "karma start",
+    "build": "rollup -c",
+    "test:dev": "karma start",
+    "build:dev": "onchange src/**/*.js src/*.js -- rollup -c rollup.config.dev.js",
+    "browser-sync": "browser-sync start --server build --files build",
     "dev": "concurrently \"npm run browser-sync\" \"npm run test:dev\" \"npm run build:dev\""
   },
   "keywords": [
