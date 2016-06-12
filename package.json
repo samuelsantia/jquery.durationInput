@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "karma start",
+    "test": "karma start --single-run=true --auto-watch=false",
     "build": "rollup -c",
     "test:dev": "karma start",
     "build:dev": "onchange src/**/*.js src/*.js -- rollup -c rollup.config.dev.js",
