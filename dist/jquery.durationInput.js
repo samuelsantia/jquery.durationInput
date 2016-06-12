@@ -116,7 +116,11 @@
       }, {
         key: 'updateUnit',
         value: function updateUnit(unit, value) {
-          if (this[unit]) this[unit].val(value);
+          var $input = this[unit];
+          if ($input) {
+            value = value === 0 && $input.val() === '' ? '' : value;
+            this[unit].val(value);
+          }
         }
       }, {
         key: 'destroy',
@@ -329,13 +333,15 @@
       }
     };
 
+    var timeoutValue = void 0;
     function _inputHandle(_ref2) {
       var target = _ref2.target;
       var unit = this.opts.unit;
 
       var values = this.renderer.getValues();
+      var value = converters['to' + capitalize(unit)](values);
 
-      this.val(converters['to' + capitalize(unit)](values));
+      this.val(value);
     };
 
     function _blurHandle(_ref3) {
@@ -353,6 +359,8 @@
         var values = this.renderer.getValues();
         this.val(converters['to' + capitalize(unit)](values));
       }
+
+      this.forceMin();
     };
 
     function _getInputStep($input) {
@@ -438,7 +446,7 @@
         var format = _opts.format;
 
         if (value > max) value = max;
-        if (value < min) value = min;
+        if (value < 0) value = 0;
 
         var prevValue = inputVal(this.el);
         var splitted = converters.splitTime(value, unit, format);
@@ -447,6 +455,13 @@
         this.el.val(value);
 
         if (prevValue !== value) this.el.trigger('change');
+      }
+    }, {
+      key: 'forceMin',
+      value: function forceMin() {
+        var min = this.opts.min;
+
+        if (this.val() < min) this.val(min);
       }
     }]);
     return DurationInput;

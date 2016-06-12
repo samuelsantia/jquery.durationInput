@@ -6,15 +6,14 @@
 </head>
 <body>
 
-  <input type='text' id='test-input' min="5" step="5" value="12" format="h/m">
+  <input type='text' id='test-input' min="25">
 
   <script src='jquery.min.js'></script>
   <script src='jquery.durationInput.js'></script>
   <script>
     $(function() {
       $('#test-input').durationInput({
-        //step: 5,
-        max: 65
+        //format: 'hh/mm'
       }).change(function () {
         console.log(this.value)
       });

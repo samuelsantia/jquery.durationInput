@@ -40,8 +40,11 @@ class DurationInput {
     this.opts  = $.extend({}, defaults, optsFromAttrs(this.el), opts);
     this.renderer = new Renderer(this);
 
+    let initialValue = inputVal(this.el);
+    if ( initialValue < this.opts.min ) initialValue = this.opts.min;
+
     this.renderer.render();
-    this.val(inputVal(this.el));
+    this.val(initialValue);
     this.bindEvents();
   }
   destroy() {
@@ -95,3 +98,5 @@ $.fn.durationInput = function (options) {
     return $el;
   });
 };
+
+$.fn.durationInput.defaults = defaults;

@@ -40,7 +40,8 @@ export default (function (){
     updateUnit(unit, value) {
       const $input = this[unit];
       if ( $input ) {
-        value = value === 0 && $input.val() === '' ? '' : value;
+        const zeroPrefixed = $input.data('zero-prefixed');
+        if ( zeroPrefixed && value < 10 ) value = '0' + value;
         this[unit].val(value);
       }
     }
@@ -63,19 +64,19 @@ export default (function (){
 
     switch (input) {
       case 'd': case 'dd':
-        return this.days  = _renderInput.call(this, 'days');
+        return this.days  = _renderInput.call(this, 'days', input);
       case 'h': case 'hh':
-        return this.hours = _renderInput.call(this, 'hours');
+        return this.hours = _renderInput.call(this, 'hours', input);
       case 'm': case 'mm':
-        return this.minutes = _renderInput.call(this, 'minutes');
+        return this.minutes = _renderInput.call(this, 'minutes', input);
       case 's': case 'ss':
-        return this.seconds = _renderInput.call(this, 'seconds');
+        return this.seconds = _renderInput.call(this, 'seconds', input);
       default:
         throw new SyntaxError(`${input} format is not defined in time formats`);
     }
   };
 
-  function _renderInput(inputUnit) {
+  function _renderInput(inputUnit, format) {
     const { id:containerId, opts, wrapper } = this.container;
     const { classes: { inputGroup:groupClass }, labels, tpls } = opts;
 
@@ -84,7 +85,7 @@ export default (function (){
     const $group = $(tpls.group(id, groupClass, label));
     const $input = $('<input>')
       .attr({ 'id': id, type: 'text' })
-      .data('unit', inputUnit);
+      .data({ 'unit': inputUnit, 'zero-prefixed': format.length > 1 });
 
     $group.append($input).appendTo(this.wrapper);
 

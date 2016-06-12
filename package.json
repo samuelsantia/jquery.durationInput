@@ -9,7 +9,10 @@
     "test:dev": "karma start",
     "build:dev": "onchange src/**/*.js src/*.js -- rollup -c rollup.config.dev.js",
     "browser-sync": "browser-sync start --server build --files build",
-    "dev": "concurrently \"npm run browser-sync\" \"npm run test:dev\" \"npm run build:dev\""
+    "dev": "concurrently \"npm run browser-sync\" \"npm run test:dev\" \"npm run build:dev\"",
+    "preversion": "npm test",
+    "version": "npm run build && git add -A dist",
+    "postversion": "git push && git push --tags"
   },
   "keywords": [
     "jquery-plugin"
