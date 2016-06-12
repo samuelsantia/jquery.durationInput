@@ -118,7 +118,8 @@
         value: function updateUnit(unit, value) {
           var $input = this[unit];
           if ($input) {
-            value = value === 0 && $input.val() === '' ? '' : value;
+            var zeroPrefixed = $input.data('zero-prefixed');
+            if (zeroPrefixed && value < 10) value = '0' + value;
             this[unit].val(value);
           }
         }
@@ -146,19 +147,19 @@
 
       switch (input) {
         case 'd':case 'dd':
-          return this.days = _renderInput.call(this, 'days');
+          return this.days = _renderInput.call(this, 'days', input);
         case 'h':case 'hh':
-          return this.hours = _renderInput.call(this, 'hours');
+          return this.hours = _renderInput.call(this, 'hours', input);
         case 'm':case 'mm':
-          return this.minutes = _renderInput.call(this, 'minutes');
+          return this.minutes = _renderInput.call(this, 'minutes', input);
         case 's':case 'ss':
-          return this.seconds = _renderInput.call(this, 'seconds');
+          return this.seconds = _renderInput.call(this, 'seconds', input);
         default:
           throw new SyntaxError(input + ' format is not defined in time formats');
       }
     };
 
-    function _renderInput(inputUnit) {
+    function _renderInput(inputUnit, format) {
       var _container2 = this.container;
       var containerId = _container2.id;
       var opts = _container2.opts;
@@ -171,7 +172,7 @@
       var id = inputUnit + '-' + containerId;
       var label = labels[inputUnit];
       var $group = $(tpls.group(id, groupClass, label));
-      var $input = $('<input>').attr({ 'id': id, type: 'text' }).data('unit', inputUnit);
+      var $input = $('<input>').attr({ 'id': id, type: 'text' }).data({ 'unit': inputUnit, 'zero-prefixed': format.length > 1 });
 
       $group.append($input).appendTo(this.wrapper);
 
@@ -413,8 +414,11 @@
       this.opts = $.extend({}, defaults, optsFromAttrs(this.el), opts);
       this.renderer = new Renderer(this);
 
+      var initialValue = inputVal(this.el);
+      if (initialValue < this.opts.min) initialValue = this.opts.min;
+
       this.renderer.render();
-      this.val(inputVal(this.el));
+      this.val(initialValue);
       this.bindEvents();
     }
 
@@ -479,5 +483,7 @@
       return $el;
     });
   };
+
+  $.fn.durationInput.defaults = defaults;
 
 }));
