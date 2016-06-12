@@ -1,5 +1,5 @@
 /*
-  jquery.durationInput 0.1.0
+  jquery.durationInput 0.1.1
   Samuel Santiago <samuelsantia@gmail.com>
   license: ISC <https://opensource.org/licenses/ISC>
  */

@@ -1,5 +1,4 @@
 import babel from 'rollup-plugin-babel';
-//import jquery from 'jquery';
 
 export default {
   entry: 'src/index.js',
@@ -7,7 +6,7 @@ export default {
   format: 'umd',
   banner:
 `/*
-  jquery.durationInput 0.1.0
+  jquery.durationInput ${process.env.npm_package_version}
   Samuel Santiago <samuelsantia@gmail.com>
   license: ISC <https://opensource.org/licenses/ISC>
  */`,
