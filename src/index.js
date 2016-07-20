@@ -43,6 +43,12 @@ class DurationInput {
     let initialValue = inputVal(this.el);
     if ( initialValue < this.opts.min ) initialValue = this.opts.min;
 
+    // autobindings
+    this.keyPressHandle = handlers.keyPressHandle.bind(this);
+    this.keyDownHandle = handlers.keyDownHandle.bind(this);
+    this.inputHandle = handlers.inputHandle.bind(this);
+    this.blurHandle = handlers.blurHandle.bind(this);
+
     this.renderer.render();
     this.val(initialValue);
     this.bindEvents();
@@ -53,16 +59,18 @@ class DurationInput {
   }
   bindEvents() {
     this.renderer.inputs
-      .on('keydown', handlers.keyDownHandle.bind(this))
-      .on('input', handlers.inputHandle.bind(this))
-      .on('blur',  handlers.blurHandle.bind(this));
+      .on('keypress', this.keyPressHandle)
+      .on('keydown', this.keyDownHandle)
+      .on('input', this.inputHandle)
+      .on('blur',  this.blurHandle);
   }
 
   unbindEvents() {
     this.renderer.inputs
-      .off('keydown', handlers.keyDownHandle.bind(this))
-      .off('input', handlers.inputHandle.bind(this))
-      .off('blur',  handlers.blurHandle.bind(this));
+      .off('keypress', this.keyPressHandle)
+      .off('keydown', this.keyDownHandle)
+      .off('input', this.inputHandle)
+      .off('blur',  this.blurHandle);
   }
   val(value) {
     if ( typeof value === 'undefined' || value === null ) return this.el.val();

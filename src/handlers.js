@@ -8,13 +8,16 @@ export default (function () {
   const DOWN_ARROW = 40;
   const letterRegex = /[a-zA-Z]/;
 
-  function _keyDownHandle({ which:charCode, target, ctrlKey, metaKey, stopImmediatePropagation }) {
+  function _keyPressHandle({ keyCode:charCode, ctrlKey, metaKey }) {
     const char = String.fromCharCode(charCode);
     const isCtrl = ctrlKey || metaKey;
-    const $input = $(target);
-    let value  = inputVal($input);
 
     if ( !isCtrl && letterRegex.test(char) ) return false;
+  };
+
+  function _keyDownHandle({ keyCode:charCode, target }) {
+    const $input = $(target);
+    let value  = inputVal($input);
 
     if ( charCode === UP_ARROW ) {
       value += _getInputStep.call(this, $input);
@@ -29,7 +32,6 @@ export default (function () {
     }
   };
 
-  let timeoutValue;
   function _inputHandle({ target }) {
     const { unit } = this.opts;
     const values   = this.renderer.getValues();
@@ -61,6 +63,7 @@ export default (function () {
   };
 
   return {
+    keyPressHandle: _keyPressHandle,
     keyDownHandle: _keyDownHandle,
     inputHandle: _inputHandle,
     blurHandle: _blurHandle
