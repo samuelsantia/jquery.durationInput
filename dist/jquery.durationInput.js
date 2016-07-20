@@ -1,5 +1,5 @@
 /*
-  jquery.durationInput 0.1.2
+  jquery.durationInput 0.1.3
   Samuel Santiago <samuelsantia@gmail.com>
   license: ISC <https://opensource.org/licenses/ISC>
  */
@@ -307,19 +307,23 @@
     var DOWN_ARROW = 40;
     var letterRegex = /[a-zA-Z]/;
 
-    function _keyDownHandle(_ref) {
-      var charCode = _ref.which;
-      var target = _ref.target;
+    function _keyPressHandle(_ref) {
+      var charCode = _ref.keyCode;
       var ctrlKey = _ref.ctrlKey;
       var metaKey = _ref.metaKey;
-      var stopImmediatePropagation = _ref.stopImmediatePropagation;
 
       var char = String.fromCharCode(charCode);
       var isCtrl = ctrlKey || metaKey;
-      var $input = $(target);
-      var value = inputVal($input);
 
       if (!isCtrl && letterRegex.test(char)) return false;
+    };
+
+    function _keyDownHandle(_ref2) {
+      var charCode = _ref2.keyCode;
+      var target = _ref2.target;
+
+      var $input = $(target);
+      var value = inputVal($input);
 
       if (charCode === UP_ARROW) {
         value += _getInputStep.call(this, $input);
@@ -334,9 +338,8 @@
       }
     };
 
-    var timeoutValue = void 0;
-    function _inputHandle(_ref2) {
-      var target = _ref2.target;
+    function _inputHandle(_ref3) {
+      var target = _ref3.target;
       var unit = this.opts.unit;
 
       var values = this.renderer.getValues();
@@ -345,8 +348,8 @@
       this.val(value);
     };
 
-    function _blurHandle(_ref3) {
-      var target = _ref3.target;
+    function _blurHandle(_ref4) {
+      var target = _ref4.target;
 
       var $input = $(target);
       var step = _getInputStep.call(this, $input);
@@ -374,6 +377,7 @@
     };
 
     return {
+      keyPressHandle: _keyPressHandle,
       keyDownHandle: _keyDownHandle,
       inputHandle: _inputHandle,
       blurHandle: _blurHandle
@@ -417,6 +421,12 @@
       var initialValue = inputVal(this.el);
       if (initialValue < this.opts.min) initialValue = this.opts.min;
 
+      // autobindings
+      this.keyPressHandle = handlers.keyPressHandle.bind(this);
+      this.keyDownHandle = handlers.keyDownHandle.bind(this);
+      this.inputHandle = handlers.inputHandle.bind(this);
+      this.blurHandle = handlers.blurHandle.bind(this);
+
       this.renderer.render();
       this.val(initialValue);
       this.bindEvents();
@@ -431,12 +441,12 @@
     }, {
       key: 'bindEvents',
       value: function bindEvents() {
-        this.renderer.inputs.on('keydown', handlers.keyDownHandle.bind(this)).on('input', handlers.inputHandle.bind(this)).on('blur', handlers.blurHandle.bind(this));
+        this.renderer.inputs.on('keypress', this.keyPressHandle).on('keydown', this.keyDownHandle).on('input', this.inputHandle).on('blur', this.blurHandle);
       }
     }, {
       key: 'unbindEvents',
       value: function unbindEvents() {
-        this.renderer.inputs.off('keydown', handlers.keyDownHandle.bind(this)).off('input', handlers.inputHandle.bind(this)).off('blur', handlers.blurHandle.bind(this));
+        this.renderer.inputs.off('keypress', this.keyPressHandle).off('keydown', this.keyDownHandle).off('input', this.inputHandle).off('blur', this.blurHandle);
       }
     }, {
       key: 'val',
